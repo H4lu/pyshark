@@ -272,17 +272,20 @@ class JsonLayer(Layer):
         """
         if self._showname_fields_converted_to_regular:
             return
-        for field_name in self._all_fields:
+        copy = self._all_fields.copy()
+        for field_name in copy:
             if ":" in field_name:
-                field_value = self._all_fields.pop(field_name)
+                field_value = copy.pop(field_name)
                 if isinstance(field_value, dict):
                     # Save the showname
                     field_value["showname"] = field_name
                 # Convert the old name to the new name.
-                self._all_fields[
+                copy[
                     self._field_name_from_showname(field_name)] = field_value
 
+        self._all_fields = copy
         self._showname_fields_converted_to_regular = True
+        
 
     def _get_internal_field_by_name(self, name):
         """Gets the field by name, or None if not found."""
