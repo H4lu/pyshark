@@ -275,15 +275,14 @@ class JsonLayer(Layer):
         copy = self._all_fields.copy()
         for field_name in copy:
             if ":" in field_name:
-                field_value = copy.pop(field_name)
+                field_value = self._all_fields.pop(field_name)
                 if isinstance(field_value, dict):
                     # Save the showname
                     field_value["showname"] = field_name
                 # Convert the old name to the new name.
-                copy[
+                self._all_fields[
                     self._field_name_from_showname(field_name)] = field_value
-
-        self._all_fields = copy
+                
         self._showname_fields_converted_to_regular = True
         
 
